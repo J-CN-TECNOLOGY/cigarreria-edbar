@@ -39,7 +39,7 @@
             <!-- TOTAL PURCHASES CARD -->
             <div class="col-lg-2">
                 <!-- small box -->
-                <div class="small-box bg-info">
+                <div class="small-box bg-success">
                     <div class="inner">
                         <h4 id="totalPurchases">$ / 2.500.000</h4>
 
@@ -54,56 +54,59 @@
             <!-- TOTAL CARD SALES -->
             <div class="col-lg-2">
                 <!-- small box -->
-                <div class="small-box bg-info">
+                <div class="small-box bg-warning">
                     <div class="inner">
-                        <h4 id="totalProducts">125</h4>
+                        <h4 id="totalSales">$ / 1.200.000</h4>
 
-                        <p>Productos Registrados</p>
+                        <p>Total Ventas</p>
                     </div>
                     <div class="icon">
-                        <i class="fa-solid fa-bag-shopping"></i>
+                        <i class="fa-solid fa-sack-dollar"></i>
                     </div>
                     <a style="cursor: pointer;" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
+            <!-- TOTAL CARD EARNINGS -->
             <div class="col-lg-2">
                 <!-- small box -->
-                <div class="small-box bg-info">
+                <div class="small-box bg-danger">
                     <div class="inner">
-                        <h4 id="totalProducts">125</h4>
+                        <h4 id="totalEarnings">$ / 470.000</h4>
 
-                        <p>Productos Registrados</p>
+                        <p>Total Ganancias</p>
                     </div>
                     <div class="icon">
-                        <i class="fa-solid fa-bag-shopping"></i>
+                        <i class="fa-solid fa-circle-dollar-to-slot"></i>
                     </div>
                     <a style="cursor: pointer;" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
+            <!-- TOTAL CARD EARNINGS -->
             <div class="col-lg-2">
                 <!-- small box -->
-                <div class="small-box bg-info">
+                <div class="small-box bg-primary">
                     <div class="inner">
-                        <h4 id="totalProducts">125</h4>
+                        <h4 id="totalProductsMinStock">15</h4>
 
-                        <p>Productos Registrados</p>
+                        <p>Productos poco Stock</p>
                     </div>
                     <div class="icon">
-                        <i class="fa-solid fa-bag-shopping"></i>
+                        <i class="fa-solid fa-boxes-stacked"></i>
                     </div>
                     <a style="cursor: pointer;" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
+            <!-- CARD TOTAL SALES CURRENT DAY -->
             <div class="col-lg-2">
                 <!-- small box -->
-                <div class="small-box bg-info">
+                <div class="small-box bg-secondary">
                     <div class="inner">
-                        <h4 id="totalProducts">125</h4>
+                        <h4 id="totalSalesToday">$ / 250.000</h4>
 
-                        <p>Productos Registrados</p>
+                        <p>Ventas del día</p>
                     </div>
                     <div class="icon">
-                        <i class="fa-solid fa-bag-shopping"></i>
+                        <i class="fa-solid fa-calendar-day"></i>
                     </div>
                     <a style="cursor: pointer;" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
@@ -113,3 +116,16 @@
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "ajax/dashboard.ajax.php",
+            method: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                console.log("respuesta", response);
+            }
+        })
+    })
+</script>
