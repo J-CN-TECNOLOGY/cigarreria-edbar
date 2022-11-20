@@ -26,7 +26,7 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h4 id="totalProducts">125</h4>
+                        <h4 id="totalProducts"></h4>
 
                         <p>Productos Registrados</p>
                     </div>
@@ -125,6 +125,7 @@
             dataType: 'json',
             success: function(response) {
                 console.log("respuesta", response);
+                $("#totalProducts").html(response[0]['totalProducts']);
             }
         })
     })

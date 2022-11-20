@@ -1,5 +1,5 @@
 <?php
-
+require_once"connection.php";
 class DashboardModel{
     
     static public function mdlGetDataDashboard(){
@@ -8,7 +8,7 @@ class DashboardModel{
 
         $stmt->execute();
 
-        return $stmt->fetchAll(); 
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
 }
