@@ -41,7 +41,7 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h4 id="totalPurchases">$ / 2.500.000</h4>
+                        <h4 id="totalPurchases"></h4>
 
                         <p>Total de Compras</p>
                     </div>
@@ -56,7 +56,7 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h4 id="totalSales">$ / 1.200.000</h4>
+                        <h4 id="totalSales"></h4>
 
                         <p>Total Ventas</p>
                     </div>
@@ -126,6 +126,9 @@
             success: function(response) {
                 console.log("respuesta", response);
                 $("#totalProducts").html(response[0]['totalProducts']);
+                $("#totalPurchases").html('$ ' + response[0]['totalPurchases'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
+                $("#totalSales").html('$ ' + response[0]['totalSales'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
+
             }
         })
     })
