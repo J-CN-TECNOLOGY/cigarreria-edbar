@@ -71,7 +71,7 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h4 id="totalEarnings">$ / 470.000</h4>
+                        <h4 id="totalEarnings"></h4>
 
                         <p>Total Ganancias</p>
                     </div>
@@ -128,7 +128,9 @@
                 $("#totalProducts").html(response[0]['totalProducts']);
                 $("#totalPurchases").html('$ ' + response[0]['totalPurchases'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
                 $("#totalSales").html('$ ' + response[0]['totalSales'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
-
+                $("#totalEarnings").html('$ ' + response[0]['totalEarnings'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
+                $("#totalProductsMinStock").html(response[0]['totalProductsMinStock']);
+                $("#totalSalesToday").html('$ ' + response[0]['totalSalesToday'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
             }
         })
     })
