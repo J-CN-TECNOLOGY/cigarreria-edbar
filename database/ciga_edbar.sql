@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 02-11-2022 a las 01:44:47
+-- Tiempo de generación: 22-11-2022 a las 04:11:16
 -- Versión del servidor: 5.7.36
 -- Versión de PHP: 7.4.26
 
@@ -20,6 +20,39 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `ciga_edbar`
 --
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+DROP PROCEDURE IF EXISTS `prc_ObtainDashboardData`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_ObtainDashboardData` ()  NO SQL
+BEGIN
+declare totalProducts int;
+declare totalPurchases float;
+declare totalSales float;
+declare totalEarnings float;
+declare totalProductsMinStock int;
+declare totalSalesToday float;
+
+SET totalProducts = (SELECT count(*) FROM products p);
+SET totalPurchases = (select sum(p.precio_compra_producto*p.stock_producto) from products p);
+set totalSales = (select sum(vc.total_venta) from venta_cabecera vc where EXTRACT(MONTH FROM vc.fecha_venta) = EXTRACT(MONTH FROM curdate()) and EXTRACT(YEAR FROM vc.fecha_venta) = EXTRACT(YEAR FROM curdate()));
+set totalEarnings = (select sum(vd.total_venta - (p.precio_compra_producto * vd.cantidad)) from venta_detalle vd inner join products p on vd.codigo_producto = p.codigo_producto
+                 where EXTRACT(MONTH FROM vd.fecha_venta) = EXTRACT(MONTH FROM curdate()) and EXTRACT(YEAR FROM vd.fecha_venta) = EXTRACT(YEAR FROM curdate()));
+set totalProductsMinStock = (select count(1) from products p where p.stock_producto <= p.minimo_stock_producto);
+set totalSalesToday = (select sum(vc.total_venta) from venta_cabecera vc where vc.fecha_venta = curdate());
+
+SELECT IFNULL(totalProducts,0) AS totalProducts,
+	   IFNULL(ROUND(totalPurchases,2),0) AS totalCompras,
+       IFNULL(ROUND(totalSales,2),0) AS totalSales,
+       IFNULL(ROUND(totalEarnings,2),0) AS totalEarnings,
+       IFNULL(totalProductsMinStock,0) AS totalProductsMinStock,
+       IFNULL(ROUND(totalSalesToday,2),0) AS totalSalesToday;
+
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -96,11 +129,11 @@ INSERT INTO `empresa` (`id_empresa`, `razon_social`, `ruc`, `direccion`, `marca`
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `productos`
+-- Estructura de tabla para la tabla `products`
 --
 
-DROP TABLE IF EXISTS `productos`;
-CREATE TABLE IF NOT EXISTS `productos` (
+DROP TABLE IF EXISTS `products`;
+CREATE TABLE IF NOT EXISTS `products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `codigo_producto` bigint(13) NOT NULL,
   `id_categoria_producto` int(11) DEFAULT NULL,
@@ -117,10 +150,10 @@ CREATE TABLE IF NOT EXISTS `productos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Volcado de datos para la tabla `productos`
+-- Volcado de datos para la tabla `products`
 --
 
-INSERT INTO `productos` (`id`, `codigo_producto`, `id_categoria_producto`, `descripcion_producto`, `precio_compra_producto`, `precio_venta_producto`, `utilidad`, `stock_producto`, `minimo_stock_producto`, `ventas_producto`, `fecha_creacion_producto`, `fecha_actualizacion_producto`) VALUES
+INSERT INTO `products` (`id`, `codigo_producto`, `id_categoria_producto`, `descripcion_producto`, `precio_compra_producto`, `precio_venta_producto`, `utilidad`, `stock_producto`, `minimo_stock_producto`, `ventas_producto`, `fecha_creacion_producto`, `fecha_actualizacion_producto`) VALUES
 (1, 7755139002809, 8, 'Paisana extra 5k', 18.29, 20, 1.71, 2, 0, 4, '2021-10-24 22:27:45', '0000-00-00'),
 (2, 7751271027656, 9, 'Gloria Fresa 500ml', 3.79, 5, 1.21, 6, 3, 0, '0000-00-00 00:00:00', '0000-00-00'),
 (3, 7751271021999, 7, 'Gloria evaporada ligth 400g', 3.4, 5, 1.6, 24, 12, 0, '0000-00-00 00:00:00', '0000-00-00'),
