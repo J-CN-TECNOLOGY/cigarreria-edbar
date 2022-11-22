@@ -28,7 +28,7 @@
                     <div class="inner">
                         <h4 id="totalProducts"></h4>
 
-                        <p>Productos Registrados</p>
+                        <p>Productos</p>
                     </div>
                     <div class="icon">
                         <i class="fa-solid fa-cart-flatbed"></i>
@@ -41,7 +41,7 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h4 id="totalPurchases"></h4>
+                        <h4 id="Purchases"></h4>
 
                         <p>Total de Compras</p>
                     </div>
@@ -56,7 +56,7 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h4 id="totalSales"></h4>
+                        <h4 id="Sales"></h4>
 
                         <p>Total Ventas</p>
                     </div>
@@ -71,7 +71,7 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h4 id="totalEarnings"></h4>
+                        <h4 id="Earnings"></h4>
 
                         <p>Total Ganancias</p>
                     </div>
@@ -86,7 +86,7 @@
                 <!-- small box -->
                 <div class="small-box bg-primary">
                     <div class="inner">
-                        <h4 id="totalProductsMinStock"></h4>
+                        <h4 id="ProductsMinStock"></h4>
 
                         <p>Productos poco Stock</p>
                     </div>
@@ -101,7 +101,7 @@
                 <!-- small box -->
                 <div class="small-box bg-secondary">
                     <div class="inner">
-                        <h4 id="totalSalesToday"></h4>
+                        <h4 id="SalesToday"></h4>
 
                         <p>Ventas del día</p>
                     </div>
@@ -126,11 +126,11 @@
             success: function(response) {
                 console.log("respuesta", response);
                 $("#totalProducts").html(response[0]['totalProducts']);
-                $("#totalPurchases").html('$ ' + response[0]['totalPurchases'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
-                $("#totalSales").html('$ ' + response[0]['totalSales'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
-                $("#totalEarnings").html('$ ' + response[0]['totalEarnings'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
-                $("#totalProductsMinStock").html(response[0]['totalProductsMinStock']);
-                $("#totalSalesToday").html('$ ' + response[0]['totalSalesToday'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
+                $("#Purchases").html('$ ' + response[0]['Purchases'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
+                $("#Sales").html('$ ' + response[0]['Sales'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
+                $("#Earnings").html('$ ' + response[0]['Earnings'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
+                $("#ProductsMinStock").html(response[0]['ProductsMinStock']);
+                $("#SalesToday").html('$ ' + response[0]['SalesToday'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
             }
         })
     })
