@@ -86,7 +86,7 @@
                 <!-- small box -->
                 <div class="small-box bg-primary">
                     <div class="inner">
-                        <h4 id="totalProductsMinStock">15</h4>
+                        <h4 id="totalProductsMinStock"></h4>
 
                         <p>Productos poco Stock</p>
                     </div>
@@ -101,7 +101,7 @@
                 <!-- small box -->
                 <div class="small-box bg-secondary">
                     <div class="inner">
-                        <h4 id="totalSalesToday">$ / 250.000</h4>
+                        <h4 id="totalSalesToday"></h4>
 
                         <p>Ventas del día</p>
                     </div>
