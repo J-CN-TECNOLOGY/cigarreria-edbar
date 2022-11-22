@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 22-11-2022 a las 04:11:16
+-- Tiempo de generación: 22-11-2022 a las 04:45:21
 -- Versión del servidor: 5.7.36
 -- Versión de PHP: 7.4.26
 
@@ -29,26 +29,26 @@ DROP PROCEDURE IF EXISTS `prc_ObtainDashboardData`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_ObtainDashboardData` ()  NO SQL
 BEGIN
 declare totalProducts int;
-declare totalPurchases float;
-declare totalSales float;
-declare totalEarnings float;
-declare totalProductsMinStock int;
-declare totalSalesToday float;
+declare Purchases float;
+declare Sales float;
+declare Earnings float;
+declare ProductsMinStock int;
+declare SalesToday float;
 
 SET totalProducts = (SELECT count(*) FROM products p);
-SET totalPurchases = (select sum(p.precio_compra_producto*p.stock_producto) from products p);
-set totalSales = (select sum(vc.total_venta) from venta_cabecera vc where EXTRACT(MONTH FROM vc.fecha_venta) = EXTRACT(MONTH FROM curdate()) and EXTRACT(YEAR FROM vc.fecha_venta) = EXTRACT(YEAR FROM curdate()));
-set totalEarnings = (select sum(vd.total_venta - (p.precio_compra_producto * vd.cantidad)) from venta_detalle vd inner join products p on vd.codigo_producto = p.codigo_producto
+SET Purchases = (select sum(p.precio_compra_producto*p.stock_producto) from products p);
+set Sales = (select sum(vc.total_venta) from venta_cabecera vc where EXTRACT(MONTH FROM vc.fecha_venta) = EXTRACT(MONTH FROM curdate()) and EXTRACT(YEAR FROM vc.fecha_venta) = EXTRACT(YEAR FROM curdate()));
+set Earnings = (select sum(vd.total_venta - (p.precio_compra_producto * vd.cantidad)) from venta_detalle vd inner join products p on vd.codigo_producto = p.codigo_producto
                  where EXTRACT(MONTH FROM vd.fecha_venta) = EXTRACT(MONTH FROM curdate()) and EXTRACT(YEAR FROM vd.fecha_venta) = EXTRACT(YEAR FROM curdate()));
-set totalProductsMinStock = (select count(1) from products p where p.stock_producto <= p.minimo_stock_producto);
-set totalSalesToday = (select sum(vc.total_venta) from venta_cabecera vc where vc.fecha_venta = curdate());
+set ProductsMinStock = (select count(1) from products p where p.stock_producto <= p.minimo_stock_producto);
+set SalesToday = (select sum(vc.total_venta) from venta_cabecera vc where vc.fecha_venta = curdate());
 
 SELECT IFNULL(totalProducts,0) AS totalProducts,
-	   IFNULL(ROUND(totalPurchases,2),0) AS totalCompras,
-       IFNULL(ROUND(totalSales,2),0) AS totalSales,
-       IFNULL(ROUND(totalEarnings,2),0) AS totalEarnings,
-       IFNULL(totalProductsMinStock,0) AS totalProductsMinStock,
-       IFNULL(ROUND(totalSalesToday,2),0) AS totalSalesToday;
+	   IFNULL(ROUND(Purchases,2),0) AS Purchases,
+       IFNULL(ROUND(Sales,2),0) AS Sales,
+       IFNULL(ROUND(Earnings,2),0) AS Earnings,
+       IFNULL(ProductsMinStock,0) AS ProductsMinStock,
+       IFNULL(ROUND(SalesToday,2),0) AS SalesToday;
 
 END$$
 
