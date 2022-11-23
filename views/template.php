@@ -26,6 +26,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="views/assets/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="views/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="views/assets/plugins/chart.js/Chart.min.js"></script>
     <!-- AdminLTE App -->
     <script src="views/assets/dist/js/adminlte.min.js"></script>
 
