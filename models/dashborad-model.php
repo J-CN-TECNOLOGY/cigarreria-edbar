@@ -6,7 +6,7 @@ class DashboardModel
     static public function mdlGetDataDashboard()
     {
 
-        $stmt = connection::connect()->prepare('call prc_ObtainDashboardData()');
+        $stmt = Connection::connect()->prepare('call prc_ObtainDashboardData()');
 
         $stmt->execute();
 
@@ -15,7 +15,7 @@ class DashboardModel
 
     static public function mdlGetSalesCurrentMonth()
     {
-        $stmt = connection::connect()->prepare('call prc_ObtainCurrentMonthSales');
+        $stmt = Connection::connect()->prepare('call prc_ObtainCurrentMonthSales');
         
         $stmt->execute();
 

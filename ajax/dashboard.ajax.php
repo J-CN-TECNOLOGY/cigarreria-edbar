@@ -21,12 +21,15 @@ class AjaxDashboard
         echo json_encode($salesCurrentMonth);
     }
 }
-    
+
 if (isset($_POST['action']) && $_POST['action'] == 1) {
 
     $salesCurrentMonth = new AjaxDashboard();
+
     $salesCurrentMonth->getSalesCurrentMonth();
 } else {
+
     $data = new AjaxDashboard();
+
     $data->getDataDashboard();
 }
