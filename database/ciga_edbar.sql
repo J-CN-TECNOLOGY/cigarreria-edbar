@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 22-11-2022 a las 04:45:21
+-- Tiempo de generación: 01-12-2022 a las 03:03:48
 -- Versión del servidor: 5.7.36
 -- Versión de PHP: 7.4.26
 
@@ -25,6 +25,19 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+DROP PROCEDURE IF EXISTS `prc_ObtainCurrentMonthSales`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_ObtainCurrentMonthSales` ()  NO SQL
+BEGIN
+
+SELECT date(vc.sale_date) as sale_date,
+		sum(round(vc.total_sale,2)) as total_sale
+FROM venta_cabecera vc
+where date(vc.sale_date) >= date(last_day(now() -
+INTERVAL 1 month) + INTERVAL 1 day)
+and date(vc.sale_date) <= last_day(date(CURRENT_DATE))
+group by date(vc.sale_date);
+END$$
+
 DROP PROCEDURE IF EXISTS `prc_ObtainDashboardData`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_ObtainDashboardData` ()  NO SQL
 BEGIN
@@ -37,11 +50,11 @@ declare SalesToday float;
 
 SET totalProducts = (SELECT count(*) FROM products p);
 SET Purchases = (select sum(p.precio_compra_producto*p.stock_producto) from products p);
-set Sales = (select sum(vc.total_venta) from venta_cabecera vc where EXTRACT(MONTH FROM vc.fecha_venta) = EXTRACT(MONTH FROM curdate()) and EXTRACT(YEAR FROM vc.fecha_venta) = EXTRACT(YEAR FROM curdate()));
+set Sales = (select sum(vc.total_sale) from venta_cabecera vc where EXTRACT(MONTH FROM vc.sale_date) = EXTRACT(MONTH FROM curdate()) and EXTRACT(YEAR FROM vc.sale_date) = EXTRACT(YEAR FROM curdate()));
 set Earnings = (select sum(vd.total_venta - (p.precio_compra_producto * vd.cantidad)) from venta_detalle vd inner join products p on vd.codigo_producto = p.codigo_producto
                  where EXTRACT(MONTH FROM vd.fecha_venta) = EXTRACT(MONTH FROM curdate()) and EXTRACT(YEAR FROM vd.fecha_venta) = EXTRACT(YEAR FROM curdate()));
 set ProductsMinStock = (select count(1) from products p where p.stock_producto <= p.minimo_stock_producto);
-set SalesToday = (select sum(vc.total_venta) from venta_cabecera vc where vc.fecha_venta = curdate());
+set SalesToday = (select sum(vc.total_sale) from venta_cabecera vc where vc.sale_date = curdate());
 
 SELECT IFNULL(totalProducts,0) AS totalProducts,
 	   IFNULL(ROUND(Purchases,2),0) AS Purchases,
@@ -267,8 +280,8 @@ CREATE TABLE IF NOT EXISTS `venta_cabecera` (
   `descripcion` text,
   `subtotal` float NOT NULL,
   `igv` float NOT NULL,
-  `total_venta` float DEFAULT NULL,
-  `fecha_venta` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `total_sale` float DEFAULT NULL,
+  `sale_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_boleta`)
 ) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8;
 
@@ -276,18 +289,18 @@ CREATE TABLE IF NOT EXISTS `venta_cabecera` (
 -- Volcado de datos para la tabla `venta_cabecera`
 --
 
-INSERT INTO `venta_cabecera` (`id_boleta`, `nro_boleta`, `descripcion`, `subtotal`, `igv`, `total_venta`, `fecha_venta`) VALUES
-(46, '00000014', 'Venta realizada con Nro Boleta: 00000014', 0, 0, 69, '2021-10-18 21:54:10'),
-(47, '00000015', 'Venta realizada con Nro Boleta: 00000015', 0, 0, 17.5, '2021-10-18 22:34:17'),
-(48, '00000016', 'Venta realizada con Nro Boleta: 00000016', 0, 0, 16.2, '2021-10-18 22:34:51'),
-(49, '00000017', 'Venta realizada con Nro Boleta: 00000017', 0, 0, 5, '2021-10-18 23:01:17'),
-(50, '00000018', 'Venta realizada con Nro Boleta: 00000018', 0, 0, 1.8, '2021-10-18 23:56:24'),
-(51, '00000019', 'Venta realizada con Nro Boleta: 00000019', 0, 0, 21.2, '2021-10-19 02:27:17'),
-(52, '00000020', 'Venta realizada con Nro Boleta: 00000020', 0, 0, 29.5, '2021-10-19 02:29:41'),
-(53, '00000021', 'Venta realizada con Nro Boleta: 00000021', 0, 0, 9.2, '2021-10-19 02:31:19'),
-(54, '00000022', 'Venta realizada con Nro Boleta: 00000022', 0, 0, 1.25, '2021-10-19 02:32:55'),
-(55, '00000023', 'Venta realizada con Nro Boleta: 00000023', 0, 0, 1.8, '2021-10-24 22:27:16'),
-(56, '00000024', 'Venta realizada con Nro Boleta: 00000024', 0, 0, 65.8, '2021-10-24 22:27:45');
+INSERT INTO `venta_cabecera` (`id_boleta`, `nro_boleta`, `descripcion`, `subtotal`, `igv`, `total_sale`, `sale_date`) VALUES
+(46, '00000014', 'Venta realizada con Nro Boleta: 00000014', 0, 0, 69, '2022-11-18 21:54:10'),
+(47, '00000015', 'Venta realizada con Nro Boleta: 00000015', 0, 0, 17.5, '2022-11-18 22:34:17'),
+(48, '00000016', 'Venta realizada con Nro Boleta: 00000016', 0, 0, 16.2, '2022-11-18 22:34:51'),
+(49, '00000017', 'Venta realizada con Nro Boleta: 00000017', 0, 0, 5, '2022-11-18 23:01:17'),
+(50, '00000018', 'Venta realizada con Nro Boleta: 00000018', 0, 0, 1.8, '2022-11-18 23:56:24'),
+(51, '00000019', 'Venta realizada con Nro Boleta: 00000019', 0, 0, 21.2, '2022-11-19 02:27:17'),
+(52, '00000020', 'Venta realizada con Nro Boleta: 00000020', 0, 0, 29.5, '2022-11-19 02:29:41'),
+(53, '00000021', 'Venta realizada con Nro Boleta: 00000021', 0, 0, 9.2, '2022-11-19 02:31:19'),
+(54, '00000022', 'Venta realizada con Nro Boleta: 00000022', 0, 0, 1.25, '2022-11-19 02:32:55'),
+(55, '00000023', 'Venta realizada con Nro Boleta: 00000023', 0, 0, 1.8, '2022-11-24 22:27:16'),
+(56, '00000024', 'Venta realizada con Nro Boleta: 00000024', 0, 0, 65.8, '2022-11-24 22:27:45');
 
 -- --------------------------------------------------------
 

@@ -201,7 +201,7 @@
                     total_sales_month = parseFloat(total_sales_month) + parseFloat(response[i]['total_sale']);
                 }
 
-                $(".card-title").html('Ventas del Mes: $ ' + total_sales_month.toString().replace(/\d(?=(\d{3})+\.)/g, "$&"));
+                $(".card-title").html('Ventas del Mes: $ ' + total_sales_month.toString().replace(/\d(?=(\d{3})+\.)/g, "$&,"));
 
                 var barChartCanvas = $("#barChart").get(0).getContext('2d');
 
@@ -241,16 +241,12 @@
                                     var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
                                         scale_max = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._yScale.maxHeight;
                                     ctx.fillStyle = '#444';
-
                                     var y_pos = model.y - 5;
-
                                     // Make sure data value does not get overFlow and hidden
                                     // When the bar's value is too clase to max value of scale
                                     // Note: The y value is reverse, it counts from top down
-
-                                    if ((scale_max - model.y) / scale_max >= 0.93) {
+                                    if ((scale_max - model.y) / scale_max >= 0.93)
                                         y_pos = model.y + 20;
-                                    }
                                     ctx.fillText(dataset.data[i], model.x, y_pos);
                                 }
                             });
@@ -259,7 +255,7 @@
                 }
                 new Chart(barChartCanvas, {
                     type: 'bar',
-                    data: barChartCanvas,
+                    data: barChartData,
                     options: barChartOptions
                 })
             }
