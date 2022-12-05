@@ -10,7 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cigarreria Edbar</title>
 
-    <link rel="shortcut icon" href="views/assets/dist/img/AdminLTELogo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="views/assets/dist/img/LogoCigarreriaEdbar.png" type="image/x-icon">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
@@ -19,6 +19,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="views/assets/dist/css/adminlte.min.css">
     <!-- Template styles -->
     <link rel="stylesheet" href="views/assets/dist/css/template.css">
+
+    <!-- REQUIRED CSS -->
+    
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="views/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- <link rel="stylesheet" href=""> -->
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- REQUIRED SCRIPTS -->
 
@@ -30,6 +39,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="views/assets/plugins/chart.js/Chart.min.js"></script>
     <!-- AdminLTE App -->
     <script src="views/assets/dist/js/adminlte.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="views/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- JS Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </head>
 
