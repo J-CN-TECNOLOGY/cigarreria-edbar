@@ -7,7 +7,6 @@ class DashboardController
     {
 
         $data = DashboardModel::mdlGetDataDashboard();
-
         return $data;
     }
 
@@ -15,7 +14,18 @@ class DashboardController
     {
 
         $salesCurrentMonth = DashboardModel::mdlGetSalesCurrentMonth();
-
         return $salesCurrentMonth;
+    }
+
+    static public function ctrBestSellingProducts()
+    {
+        $bestSellingProducts = DashboardModel::mdlBestSellingProducts();
+        return $bestSellingProducts;
+    }
+
+    static public function ctrLowStockProducts()
+    {
+        $lowStockProducts = DashboardModel::mdlLowStockProducts();
+        return $lowStockProducts;
     }
 }

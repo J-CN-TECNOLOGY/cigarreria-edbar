@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 01-12-2022 a las 03:03:48
+-- Tiempo de generación: 05-12-2022 a las 01:36:47
 -- Versión del servidor: 5.7.36
 -- Versión de PHP: 7.4.26
 
@@ -25,17 +25,47 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+DROP PROCEDURE IF EXISTS `prc_ListBestSellingProducts`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_ListBestSellingProducts` ()  NO SQL
+BEGIN
+
+SELECT 	p.codigo_producto, 
+		p.descripcion_producto, 
+        SUM(vd.cantidad) as cantidad,
+        SUM(Round(vd.total_venta,2)) as total_venta
+FROM venta_detalle vd INNER JOIN products p ON
+vd.codigo_producto = p.codigo_producto 
+GROUP BY p.codigo_producto,
+		 p.descripcion_producto
+ORDER BY SUM(Round(vd.total_venta,2)) DESC
+LIMIT 10;
+
+END$$
+
+DROP PROCEDURE IF EXISTS `prc_LowStockProducts`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_LowStockProducts` ()  NO SQL
+BEGIN
+SELECT p.codigo_producto,
+		p.descripcion_producto,
+        p.stock_producto,
+        p.minimo_stock_producto
+FROM products p
+WHERE p.stock_producto <= p.minimo_stock_producto
+ORDER BY p.stock_producto ASC;
+END$$
+
 DROP PROCEDURE IF EXISTS `prc_ObtainCurrentMonthSales`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `prc_ObtainCurrentMonthSales` ()  NO SQL
 BEGIN
 
 SELECT date(vc.sale_date) as sale_date,
-		sum(round(vc.total_sale,2)) as total_sale
+		SUM(round(vc.total_sale,2)) AS total_sale
 FROM venta_cabecera vc
-where date(vc.sale_date) >= date(last_day(now() -
+WHERE date(vc.sale_date) >= date(last_day(now() -
 INTERVAL 1 month) + INTERVAL 1 day)
-and date(vc.sale_date) <= last_day(date(CURRENT_DATE))
-group by date(vc.sale_date);
+AND date(vc.sale_date) <= last_day(date(CURRENT_DATE))
+GROUP BY date(vc.sale_date);
+
 END$$
 
 DROP PROCEDURE IF EXISTS `prc_ObtainDashboardData`$$
@@ -168,16 +198,16 @@ CREATE TABLE IF NOT EXISTS `products` (
 
 INSERT INTO `products` (`id`, `codigo_producto`, `id_categoria_producto`, `descripcion_producto`, `precio_compra_producto`, `precio_venta_producto`, `utilidad`, `stock_producto`, `minimo_stock_producto`, `ventas_producto`, `fecha_creacion_producto`, `fecha_actualizacion_producto`) VALUES
 (1, 7755139002809, 8, 'Paisana extra 5k', 18.29, 20, 1.71, 2, 0, 4, '2021-10-24 22:27:45', '0000-00-00'),
-(2, 7751271027656, 9, 'Gloria Fresa 500ml', 3.79, 5, 1.21, 6, 3, 0, '0000-00-00 00:00:00', '0000-00-00'),
-(3, 7751271021999, 7, 'Gloria evaporada ligth 400g', 3.4, 5, 1.6, 24, 12, 0, '0000-00-00 00:00:00', '0000-00-00'),
+(2, 7751271027656, 9, 'Gloria Fresa 500ml', 3.79, 5, 1.21, 3, 3, 0, '2022-12-05 01:23:07', '0000-00-00'),
+(3, 7751271021999, 7, 'Gloria evaporada ligth 400g', 3.4, 5, 1.6, 8, 12, 0, '2022-12-05 01:23:42', '0000-00-00'),
 (4, 7750106003094, 1, 'soda san jorge 40g', 0.5, 0.8, 0.3, 0, 0, 0, '0000-00-00 00:00:00', '0000-00-00'),
-(5, 7622300279783, 1, 'vainilla field 37g', 0.33, 0.5, 0.17, 24, 10, 0, '0000-00-00 00:00:00', '0000-00-00'),
+(5, 7622300279783, 1, 'vainilla field 37g', 0.33, 0.5, 0.17, 7, 10, 0, '2022-12-05 01:24:11', '0000-00-00'),
 (6, 7750243053037, 1, 'Margarita', 0.53, 0.6, 0.07, 12, 6, 0, '0000-00-00 00:00:00', '0000-00-00'),
 (7, 7622300513917, 1, 'soda field 34g', 0.37, 0.6, 0.23, 18, 5, 0, '0000-00-00 00:00:00', '0000-00-00'),
-(8, 7622300116521, 1, 'ritz original', 0.43, 0.7, 0.27, 24, 10, 0, '0000-00-00 00:00:00', '0000-00-00'),
+(8, 7622300116521, 1, 'ritz original', 0.43, 0.7, 0.27, 8, 10, 0, '2022-12-05 01:24:26', '0000-00-00'),
 (9, 7622300124526, 1, 'ritz queso 34g', 0.68, 0.8, 0.12, 18, 5, 0, '0000-00-00 00:00:00', '0000-00-00'),
 (10, 7750243166201, 1, 'Chocobum', 0.62, 0.8, 0.18, 18, 9, 0, '0000-00-00 00:00:00', '0000-00-00'),
-(11, 7752748005924, 1, 'Picaras', 0.6, 0.8, 0.2, 24, 12, 0, '0000-00-00 00:00:00', '0000-00-00'),
+(11, 7752748005924, 1, 'Picaras', 0.6, 0.8, 0.2, 10, 12, 0, '2022-12-05 01:24:44', '0000-00-00'),
 (12, 7590011251100, 1, 'oreo original 36g', 0.57, 0.8, 0.23, 30, 10, 0, '0000-00-00 00:00:00', '0000-00-00'),
 (13, 7590011205158, 1, 'club social 26g', 0.53, 0.8, 0.27, 36, 10, 0, '0000-00-00 00:00:00', '0000-00-00'),
 (14, 7750885012928, 1, 'frac vanilla 45.5g', 0.52, 0.8, 0.28, 18, 5, 0, '0000-00-00 00:00:00', '0000-00-00'),
@@ -290,17 +320,17 @@ CREATE TABLE IF NOT EXISTS `venta_cabecera` (
 --
 
 INSERT INTO `venta_cabecera` (`id_boleta`, `nro_boleta`, `descripcion`, `subtotal`, `igv`, `total_sale`, `sale_date`) VALUES
-(46, '00000014', 'Venta realizada con Nro Boleta: 00000014', 0, 0, 69, '2022-11-18 21:54:10'),
-(47, '00000015', 'Venta realizada con Nro Boleta: 00000015', 0, 0, 17.5, '2022-11-18 22:34:17'),
-(48, '00000016', 'Venta realizada con Nro Boleta: 00000016', 0, 0, 16.2, '2022-11-18 22:34:51'),
-(49, '00000017', 'Venta realizada con Nro Boleta: 00000017', 0, 0, 5, '2022-11-18 23:01:17'),
-(50, '00000018', 'Venta realizada con Nro Boleta: 00000018', 0, 0, 1.8, '2022-11-18 23:56:24'),
-(51, '00000019', 'Venta realizada con Nro Boleta: 00000019', 0, 0, 21.2, '2022-11-19 02:27:17'),
-(52, '00000020', 'Venta realizada con Nro Boleta: 00000020', 0, 0, 29.5, '2022-11-19 02:29:41'),
-(53, '00000021', 'Venta realizada con Nro Boleta: 00000021', 0, 0, 9.2, '2022-11-19 02:31:19'),
-(54, '00000022', 'Venta realizada con Nro Boleta: 00000022', 0, 0, 1.25, '2022-11-19 02:32:55'),
-(55, '00000023', 'Venta realizada con Nro Boleta: 00000023', 0, 0, 1.8, '2022-11-24 22:27:16'),
-(56, '00000024', 'Venta realizada con Nro Boleta: 00000024', 0, 0, 65.8, '2022-11-24 22:27:45');
+(46, '00000014', 'Venta realizada con Nro Boleta: 00000014', 0, 0, 69, '2022-12-18 21:54:10'),
+(47, '00000015', 'Venta realizada con Nro Boleta: 00000015', 0, 0, 17.5, '2022-12-18 22:34:17'),
+(48, '00000016', 'Venta realizada con Nro Boleta: 00000016', 0, 0, 16.2, '2022-12-18 22:34:51'),
+(49, '00000017', 'Venta realizada con Nro Boleta: 00000017', 0, 0, 5, '2022-12-18 23:01:17'),
+(50, '00000018', 'Venta realizada con Nro Boleta: 00000018', 0, 0, 1.8, '2022-12-18 23:56:24'),
+(51, '00000019', 'Venta realizada con Nro Boleta: 00000019', 0, 0, 21.2, '2022-12-19 02:27:17'),
+(52, '00000020', 'Venta realizada con Nro Boleta: 00000020', 0, 0, 29.5, '2022-12-19 02:29:41'),
+(53, '00000021', 'Venta realizada con Nro Boleta: 00000021', 0, 0, 9.2, '2022-12-19 02:31:19'),
+(54, '00000022', 'Venta realizada con Nro Boleta: 00000022', 0, 0, 1.25, '2022-12-19 02:32:55'),
+(55, '00000023', 'Venta realizada con Nro Boleta: 00000023', 0, 0, 1.8, '2022-12-24 22:27:16'),
+(56, '00000024', 'Venta realizada con Nro Boleta: 00000024', 0, 0, 65.8, '2022-12-24 22:27:45');
 
 -- --------------------------------------------------------
 

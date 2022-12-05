@@ -113,11 +113,12 @@
             </div>
         </div>
 
+        <!-- Row information cards -->
         <div class="row">
             <div class="col-12">
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title"></h3>
+                        <h3 class="card-title" id="card-title"></h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
@@ -137,6 +138,75 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Los 10 productos más vendidos</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div> <!-- ./ end card-tools -->
+                    </div> <!-- ./ end card-header -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table" id="tbl_best_selling_products">
+                                <thead>
+                                    <tr>
+                                        <th>Cod. producto</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Ventas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!-- ./ end card-body -->
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Productos con poco stock</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div> <!-- ./ end card-tools -->
+                    </div> <!-- ./ end card-header -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table" id="tbl_products_little_stock">
+                                <thead>
+                                    <tr>
+                                        <th>Cod. producto</th>
+                                        <th>Producto</th>
+                                        <th>Stock actual</th>
+                                        <th>Mín. stock</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> <!-- ./ end card-body -->
+                </div>
+            </div>
+        </div>
+
+
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
@@ -149,7 +219,7 @@
             method: 'POST',
             dataType: 'json',
             success: function(response) {
-                console.log("respuesta", response);
+                // console.log("respuesta", response);
                 $("#totalProducts").html(response[0]['totalProducts']);
                 $("#Purchases").html('$ ' + response[0]['Purchases'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
                 $("#Sales").html('$ ' + response[0]['Sales'].replace(/\d(?=(\d{3})+\.)/g, "$&"));
@@ -178,11 +248,12 @@
             });
         }, 10000);
 
+        // AJAX REQUEST BAR CHART OF SALES FOR MONTH
         $.ajax({
             url: "ajax/dashboard.ajax.php",
             method: 'POST',
             data: {
-                'action': 1 //Parameter to obtain the sales for the month
+                'action': 1 // Parameter to obtain the sales for the month
             },
             dataType: 'json',
             success: function(response) {
@@ -201,7 +272,7 @@
                     total_sales_month = parseFloat(total_sales_month) + parseFloat(response[i]['total_sale']);
                 }
 
-                $(".card-title").html('Ventas del Mes: $ ' + total_sales_month.toString().replace(/\d(?=(\d{3})+\.)/g, "$&,"));
+                $("#card-title").html('Ventas del Mes: $ ' + total_sales_month.toString().replace(/\d(?=(\d{3})+\.)/g, "$&,"));
 
                 var barChartCanvas = $("#barChart").get(0).getContext('2d');
 
@@ -260,5 +331,53 @@
                 })
             }
         });
+
+        // AJAX REQUEST LIST OF BEST SELLING PRODUCTS
+        $.ajax({
+            url: "ajax/dashboard.ajax.php",
+            type: "POST",
+            data: {
+                'action': 2 // list top 10 best selling products
+            },
+            dataType: 'json',
+            success: function(response) {
+                console.log("respuesta", response);
+
+                for (let i = 0; i < response.length; i++) {
+                    rows = '<tr>' +
+                                '<td>' + response[i]["codigo_producto"] + '</td>' +
+                                '<td>' + response[i]["descripcion_producto"] + '</td>' +
+                                '<td>' + response[i]["cantidad"] + '</td>' +
+                                '<td>$./' + response[i]["total_venta"] + '</td>' +
+                            '</tr>'
+                    $("#tbl_best_selling_products tbody").append(rows);
+                }
+
+            }
+        });
+
+        // AJAX REQUEST PRODUCTS WITH LOW STOCK
+        $.ajax({
+            url: "ajax/dashboard.ajax.php",
+            type: "POST",
+            data: {
+                'action': 3 // list products with low stock
+            },
+            dataType: 'json',
+            success: function(response) {
+                console.log("respuesta", response);
+
+                for (let i = 0; i < response.length; i++) {
+                    rows = '<tr>' +
+                                '<td>' + response[i]["codigo_producto"] + '</td>' +
+                                '<td>' + response[i]["descripcion_producto"] + '</td>' +
+                                '<td>' + response[i]["stock_producto"] + '</td>' +
+                                '<td>' + response[i]["minimo_stock_producto"] + '</td>' +
+                            '</tr>'
+                    $("#tbl_products_little_stock tbody").append(rows);
+                }
+
+            }
+        });
     });
-</script>
+</script> 
