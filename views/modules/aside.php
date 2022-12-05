@@ -1,10 +1,12 @@
+<link rel="stylesheet" href="../../css-modifiable/aside.css">
+
 <script src="https://kit.fontawesome.com/7b4b9c23a4.js" crossorigin="anonymous"></script>
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-        <img src="views/assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <a href="index3.html" class="brand-link" style="text-decoration: none;">
+        <img src="views/assets/dist/img/3873446.jpg" alt="CigarreriaEdbar Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Cigarreria Edbar</span>
     </a>
 
@@ -12,10 +14,10 @@
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="../assets/dist/img/user1-128x128.jpg" class="img-circle elevation-2">
+                <img src="views/assets/dist/img/alexander-hipp.jpg" class="img-circle elevation-2">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block" style="text-decoration: none;">Alexander Pierce</a>
             </div>
         </div>
 

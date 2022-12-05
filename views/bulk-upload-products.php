@@ -19,6 +19,79 @@
 <!-- Main content -->
 <div class="content">
     <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Seleccionar Archivo de Carga (Excel):</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div> <!-- ./ end card-tools -->
+                    </div> <!-- ./ end card-header -->
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data" id="upload_product_form">
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <input type="file" name="fileProducts" id="fileProducts" class="control-form" accept=".xls, xlsx">
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="submit" value="Cargar Productos" class="btn btn-primary" id="btnUpload">
+                                </div>
+                            </div>
+                        </form>
+                    </div> <!-- ./ end card-body -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ROW FOR GIFT IMAGE -->
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <img src="views/assets/images/loading.gif" alt="" style="display:none;">
+            </div>
+        </div>
+
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
+
+<script>
+    $(document).ready(function() {
+
+        $("#upload_product_form").on('submit', function(e) {
+
+            e.preventDefault();
+
+            if ($("#fileProducts").get(0).files.length == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'warning',
+                    title: 'Debe seleccionar un archivo (Excel).',
+                    showConfirmButton: false,
+                    timer: 2500
+                })
+            } else {
+                var permitted_extensions = [".xls", ".xlsx"];
+                var input_file_products = $("#fileProducts");
+                var exp_reg = new RegExp("([a-zA-z0-9\s_\\.\-:])+(" + permitted_extensions.join('|') + ")$");
+
+                if (!exp_reg.test(input_file_products.val().toLowerCase())) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'warning',
+                        title: 'Debe seleccionar un archivo con extensión .xls o .xlsx.',
+                        showConfirmButton: false,
+                        timer: 2500
+                    })
+
+                    return false;
+                }
+
+                alert("cumplio con las validaciones")
+            }
+        })
+
+    })
+</script>
